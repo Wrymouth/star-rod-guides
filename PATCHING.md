@@ -38,10 +38,6 @@ To change which song is playing, simply edit the part after the `.Song:` to be a
 
 Compile your mod and start a new game, and you should hear the song you selected play during the opening cutscene!
 
-
-### Additional notes
-At this point, if you want to make more changes to map scripts, I recommend getting [Visual Studio Code](https://code.visualstudio.com/) with the [Star Rod Extension](https://marketplace.visualstudio.com/items?itemName=nanaian.vscode-star-rod). Among other things, it makes the patching process much faster.
-
 ### Advanced
 You might think it’s a bit excessive to copy and paste an entire script just to edit one line. Luckily, there is a shorter way to do it. In the script, you will see that every single line has a [hexadecimal number](https://en.wikipedia.org/wiki/Hexadecimal) at the start. This number indicates how far into the script this line of code is, also known as the offset of the line. You can patch that line specifically by specifying this offset in the patch as follows:
 
@@ -52,3 +48,6 @@ You might think it’s a bit excessive to copy and paste an entire script just t
 ```
 
 This will have the same effect as the original patch. Keep in mind that if you’re patching like this, the change you make has to be the exact same size as the original line.
+
+### Additional notes
+At this point I recommend trying things out for yourself, and experimenting with the scripting language a bit. If you have a specific idea for something you want to add to a map, try looking at code in another map that does something similar, and recreate it to fit your idea. You can look at the User Guide linked in the readme for additional help. The `.lib` files in the `database` folder in your Star Rod installation contain all the functions that can be used with the scripting language. If you get stuck, just ask in the PM Modding Discord server, also linked in the readme. Furthermore, I recommend getting [Visual Studio Code](https://code.visualstudio.com/) with the [Star Rod Extension](https://marketplace.visualstudio.com/items?itemName=nanaian.vscode-star-rod). Among other things, it makes the patching process much faster.

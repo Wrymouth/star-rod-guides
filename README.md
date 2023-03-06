@@ -8,7 +8,9 @@ __Do you want to request a tutorial for a broad topic?__ [Create an issue!](http
 
 ## Overview
 - [Basic patching](PATCHING.md)
+- [Creating NPCs](NPCS.md)
 
 ## Links
 - [Star Rod 0.5.3](https://drive.google.com/file/d/1OUHnb9T7m_aVm-WJY3mmEgFS_DU0F2je/)
 - [Paper Mario Modding Discord server](https://discord.gg/papermariomodding)
+- [Star Rod User Guide](https://docs.google.com/document/d/1LxtBXDAsYmlgKBng7XCKrXYWl1oKg6dZQU3ljoe8axc/)
