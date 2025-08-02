@@ -91,7 +91,7 @@ Now create an init script for the NPC.
 In this script, we tell the game what to do when the NPC is first created. The main purpose of this script is to define NPC behaviour for certain situations. There are six types of behaviour scripts to define here.
 
 - Aux
-- Idle (runs every frame when the player is within a certain distance)
+- Idle
 - AI
 - Interact
 - Hit
