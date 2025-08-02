@@ -9,6 +9,7 @@ __Do you want to request a tutorial for a broad topic?__ [Create an issue!](http
 ## Overview
 - [Basic patching](PATCHING.md)
 - [Creating NPCs](NPCS.md)
+- [Map transitions](TRANSITIONS.md)
 
 ## Links
 - [Star Rod 0.5.3](https://drive.google.com/file/d/1OUHnb9T7m_aVm-WJY3mmEgFS_DU0F2je/)
