@@ -2,40 +2,43 @@
 
 This guide assumes you've followed the [Basic patching](PATCHING.md) guide.
 
-Creating NPCs is a bit of a lengthy process, but it's by no means difficult. In this tutorial I am going to show you how to do it by adding an NPC to an existing map (the process is exactly the same for a custom map, if you were wondering). For convenience, the NPC will be added to the first map in the game where Mario is given control, which is the Entry Hall of Peach's Castle. The engine name for this map is kkj_00. 
+Creating NPCs is a bit of a lengthy process, but it's by no means difficult. In this tutorial I am going to show you how to do it by adding an NPC to an existing map (the process is exactly the same for a custom map, if you were wondering). For convenience, the NPC will be added to the first map in the game where Mario is given control, which is the Entry Hall of Peach's Castle. The engine name for this map is kkj_00.
 
 ## Placing the NPC in the map
+
 Open kkj_00.xml in the map editor, and think about where you want to place the NPC. Once you've found a good spot, hold down middle click and move Mario to that position in the 3D view. I am going to place the NPC as seen below, where Mario is standing.
 
 ![Mario placed right below the stairs in kkj_00](media/npcs-mario-position.png)
 
-On the right side of the Map Editor, go into the Markers tab. Click *Create*, then *New Marker*. A window will pop up. In the window, give your marker a name, set the type to *NPC*, and click OK. When you select the marker you've just created, a menu appears in the bottom right corner of the map editor. In this menu, click on the Animations tab. Here you can set the spritesheet you want your NPC to use, as well as its palette and basic animations. I decided to use Kent C Koopa, because he stands out among the other NPCs in this map. 
+On the right side of the Map Editor, go into the Markers tab. Click *Create*, then *New Marker*. A window will pop up. In the window, give your marker a name, set the type to *NPC*, and click OK. When you select the marker you've just created, a menu appears in the bottom right corner of the map editor. In this menu, click on the Animations tab. Here you can set the spritesheet you want your NPC to use, as well as its palette and basic animations. I decided to use Kent C Koopa, because he stands out among the other NPCs in this map.
 
 ![Kent C Koopa animation data](media/npcs-animation-menu.png)
 
 If you want, you can also give the NPC some basic movement in the AI Movement tab.
 
-When you're done, save the map by pressing Ctrl+S. The NPC now has a position on the map, but if you compile and run the game now you'll notice he's not actually there. 
+When you're done, save the map by pressing Ctrl+S. The NPC now has a position on the map, but if you compile and run the game now you'll notice he's not actually there.
 
 ![NPC isn't yet visible in-game](media/npcs-wheres-kent.png)
 
 This is because we haven't told the game to actually place an NPC here yet.
 
 ## Creating the NPC with code
+
 Create a patch file for this map. You can do this from the map editor by clicking the Scripts tab in the top right, then clicking the Create Patch File button. After that you can click the Open Patch File button to immediately open the file in a text editor.
 
 ### The NpcGroup
+
 In terms of code, the basis for any NPC is an NpcGroup. This is the first thing we're going to create, and I'm going to do it by copying one from the map on which Kent C Koopa originally appears. If you're making an NPC based on one that already exists in a different map, this is the recommended way to do it.
 
 ```
 #new:NpcGroup $NpcGroup_KentCKoopa
 {
-	0000003F $NpcSettings_KentCKoopa ~Vec3f:NPC_Kent % -164 0 -37
-	00002D01 $Script_Init_KentCKoopa 00000000 00000000 0000010E
-	~NoDrops
-	~Movement:NPC_Kent
-	~AnimationTable:NPC_Kent % .Sprite:KentCKoopa
-	00000000 00000000 00000000 00000000 % no tattle string
+ 0000003F $NpcSettings_KentCKoopa ~Vec3f:NPC_Kent % -164 0 -37
+ 00002D01 $Script_Init_KentCKoopa 00000000 00000000 0000010E
+ ~NoDrops
+ ~Movement:NPC_Kent
+ ~AnimationTable:NPC_Kent % .Sprite:KentCKoopa
+ 00000000 00000000 00000000 00000000 % no tattle string
 }
 ```
 
@@ -55,23 +58,24 @@ But what does all this mean? If you followed the patching tutorial, the `#new:Np
 - The purpose of the next three sets of numbers is unknown.
 - `00000000` - Reference to a tattle string defined in "1A NPC Tattles.str".  <!-- TODO test this  -->
 
-
 ### The NpcSettings
+
 Up next, create the NPC Settings. Once again I recommend copying this data from a similar (or identical) NPC from a different map.
 
 ```
 #new:NpcSettings $NpcSettings_KentCKoopa
 {
-	00000000 00440050 00000000 00000000 00000000 80077F70 00000000 8007809C
-	00000000 00000000 00630000
+ 00000000 00440050 00000000 00000000 00000000 80077F70 00000000 8007809C
+ 00000000 00000000 00630000
 }
 ```
+
 (Make sure the name matches the name you gave it in the NpcGroup.)
 
 Again there are a bunch of vague sets of numbers, but this time I am not going to explain what they all do in detail. There's only one set of numbers you need to be concerned with for now, and it's the second (in this example, it's the `00440050`). This set of numbers defines the NPC's collision. The first four digits define the NPC's height (and also the height of the talk icon that appears above their head when Mario gets close), the last four define the radius. If you want to know what all the other sets of numbers do, look in the decomp (the NpcSettings struct).
 
-
 ### The init script
+
 Now create an init script for the NPC.
 
 ```
@@ -81,6 +85,7 @@ Now create an init script for the NPC.
     End
 }
 ```
+
 (Once again, make sure the name matches the name of the script in the NpcGroup.)
 
 In this script, we tell the game what to do when the NPC is first created. The main purpose of this script is to define NPC behaviour for certain situations. There are six types of behaviour scripts to define here.
@@ -102,9 +107,11 @@ Generally, the only ones you will need are Idle, Interact and Defeat. For this N
     End
 }
 ```
+
 (`.Npc:Self` refers to the NPC this script is attached to)
 
 ### The interact script
+
 Of course, this means you now have to create another script to define the Interact behaviour.
 
 ```
@@ -129,6 +136,7 @@ To make the NPC speak, use the SpeakToPlayer function.
 ```
 
 The arguments for this function (the things between the braces) are:
+
 1. The index of the NPC saying the dialogue
 2. The NPC's talk animation
 3. The NPC's idle animation
@@ -142,6 +150,7 @@ Now the NPC itself is done, but the game still doesn't place it on the map. NPC'
 If you look in kkj_00.mscr, you'll find that there's more than one NpcGroupList in the file. To find out which list you need to modify, check the NpcGroups in each list to see if they contain the NPCs you see when you enter the castle at the start of the game. Patch that NpcGroupList (refer to [Basic Patching](PATCHING.md)), and add the new NpcGroup below the last one in the list.
 
 An NpcGroupList entry has three parts:
+
 1. The amount of NPCs in the Group (in this case, that's just 1)
 2. The name of the NpcGroup
 3. The battle associated with the NpcGroup (`00000000` if there's no associated battle). This follows the format AAAABBCC, where
@@ -156,6 +165,7 @@ An NpcGroupList entry has three parts:
     00000000 00000000 00000000
 }
 ```
+
 (Make sure to leave that line of 0s at the bottom of the list, it tells the game where the list ends.)
 
 Of course, if you're adding a custom NPC to a new map, you need to create the NpcGroupList from scratch (with `#new:`) instead of patching it, and you'll also need to add a `MakeNpcs` call to your map's $Script_Main. To see how that function works, look at the code of any map with NPCs on it.
